@@ -2,7 +2,7 @@ import User from "../Models/User.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, UnAuthenticatedError } from "../errors/index.js";
 const register = async (req, res) => {
-  const { email, name, password } = req.body;
+  const { email, name, password, location, phone_number } = req.body;
   if (!name || !email || !password) {
     throw new BadRequestError("please provide all values");
   }
@@ -10,7 +10,13 @@ const register = async (req, res) => {
   if (userAlreadyExists) {
     throw new BadRequestError("Email already in use");
   }
-  const user = await User.create({ name, email, password });
+  const user = await User.create({
+    name,
+    email,
+    password,
+    location,
+    phone_number,
+  });
   const token = user.createJWT();
   res.status(StatusCodes.OK).json({
     user: {

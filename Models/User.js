@@ -37,6 +37,16 @@ const userSchema = new mongoose.Schema({
     maxlength: 20,
     default: "my city",
   },
+  phone_number: {
+    type: String,
+    trim: true,
+    validate: {
+      validator: function (value) {
+        return validator.isMobilePhone(value, "any", { strictMode: false });
+      },
+      message: "Please provide a valid phone number",
+    },
+  },
   verificationToken: {
     type: String,
   },
